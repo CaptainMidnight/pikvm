@@ -6,7 +6,8 @@ A very simple and fully functional Raspberry Pi-based KVM over IP that you can m
 The website: [pikvm.org](https://pikvm.org). Also join to the [Discord Community Chat](https://discord.gg/bpmXfz5) for news, questions and support!
 
 * **[>>> DIY Getting Started <<<](#diy-getting-started)**
-* Watch the video: https://youtu.be/9YhPWjWv5gw
+* **Great project review by Novaspirit Tech**: https://youtu.be/plP9Y1likRg
+* Boring technical details from the developer: https://youtu.be/9YhPWjWv5gw
 * [Pro Series v3 Preorder Today!](#the-future-v3-platform-work-in-progress)
 * [Limitations](#limitations)
 * [Tips](#tips)
@@ -18,10 +19,10 @@ The website: [pikvm.org](https://pikvm.org). Also join to the [Discord Community
 * **FullHD video** using advanced **HDMI-to-CSI bridge** or **USB dongle**;
 * Extra low **100ms video latency** (for CSI bridge);
 * Bootable **Virtual CD-ROM** and **Flash Drive**;
-* USB **Keyboard** and **mouse** (with leds and the wheel), PS/2 keyboard;
+* USB **Keyboard** and **mouse** (with leds and the wheel), PS/2 keyboard, Bluetooth HID;
 * **Control the server power** using ATX functions;
 * Access via **Web UI** or **VNC**;
-* Ability to use **IPMI BMC**, **Redfish** and **Wake-on-LAN** to control the server;
+* Ability to use **IPMI BMC**, **IPMI SoL**, **Redfish** and **Wake-on-LAN** to control the server;
 * **The ready-made OS** with read-only filesystem;
 * **Extensible authorization** and SSL encryption;
 * **Health monitoring** of the Pi;
@@ -70,7 +71,7 @@ The website: [pikvm.org](https://pikvm.org). Also join to the [Discord Community
 * **Extensible authorization methods**  
   Multiple Pi-KVMs can be configured to use a [common authorization service](https://github.com/pikvm/kvmd-auth-server). PAM and its rich authorization mechanisms can also be used to integrate Pi-KVM into your existing authentication infrastructure.
 * **Macro scripts**  
-  If repetitive actions must be perfromed on the attached server (or on several different servers), a macro can be recorded with keyboard & mouse actions and can be played back mutiple times.
+  If repetitive actions must be performed on the attached server (or on several different servers), a macro can be recorded with keyboard & mouse actions and can be played back multiple times.
 
 
 ## Open Source
@@ -98,7 +99,7 @@ Pi-KVM supports several different hardware configurations, referred to as **plat
 
 ## Hardware for v2
 * Raspberry Pi board:
-  - **Recommended**: Raspberry Pi 4 (2 GB model is enough) for the best pefrormance.
+  - **Recommended**: Raspberry Pi 4 (2 GB model is enough) for the best performance.
   - ... or Raspberry Pi ZeroW (slower alternative, no ethernet).
 * MicroSD card (min 16 GB recommended).
 * USB-A 3A charger (female socket) or power supply.
@@ -114,14 +115,14 @@ Pi-KVM supports several different hardware configurations, referred to as **plat
     </details>
   * <details><summary>Variant #2: Ready-made using USB-micro splitter.</summary>
     <ul>
-      <li>1x <a href="https://www.tindie.com/products/8086net/usbpwr-splitter">USB/Power Splitter Module</a>.</li>
+      <li>1x USB/Power Splitter Module (<a href="https://www.tindie.com/products/8086net/usbpwr-splitter">UK</a>/<a href="https://www.pishop.us/product/usb-pwr-splitter/">US</a>/<a href="https://www.buyapi.ca/product/usb-pwr-splitter/">CA</a>).</li>
       <li>1x USB-A to USB-C cable (male-male).</li>
       <li>2x USB-A to USB-micro cable (male-male).</li>
     </ul>
     </details>
   * <details><summary>Variant #3: Ready-made using USB-C splitter.</summary>
     <ul>
-      <li>1x <a href="https://www.tindie.com/products/8086net/usb-cpwr-splitter">USB-C/Power Splitter Module</a>.</li>
+      <li>1x USB-C/Power Splitter Module (<a href="https://www.tindie.com/products/8086net/usb-cpwr-splitter">UK</a>/<a href="https://www.pishop.us/product/usb-c-pwr-splitter/">US</a>/<a href="https://www.buyapi.ca/product/usb-c-pwr-splitter/">CA</a>).</li>
       <li>3x USB-A to USB-C cable (male-male).</li>
       <li>For this option you can buy the official Raspberry Pi Power Supply with USB-C and get rid of one USB-C cable and the USB-A charger.</li>
     </ul>
@@ -169,6 +170,7 @@ We are also currently developing our own HAT for the Raspberry Pi 4. It will hav
 * OTG Keyboard & mouse; Mass Storage Drive emulation.
 * Ability to simulate "removal and insertion" for USB.
 * Onboard ATX power control.
+* Onboard fan controller.
 * A real-time clock.
 * CISCO-style and USB serial console port (to manage Pi-KVM OS or to connect with the server).
 * Optional AVR-based HID (for some rare and strange motherboards whose BIOS doesn't understand the OTG emulated keyboard).
@@ -223,11 +225,9 @@ Here is a diagram shows that how to connect all of the pieces (click to full siz
 
 **Raspberry Pi 4 note**: since one USB-C female connector is used to receive power and perform keyboard/mouse/drive emulation a special Y-cable must be made that splits the DATA and POWER lines of USB-C (see [reasons](https://github.com/pikvm/docs/issues/11)). It can be made from two suitable connecting cables, or soldered together from scratch. Be sure to check the circuit diagram below, otherwise you may damage your devices. The appropriate USB pinout(s) can easily be found on Google. Please note that if you make a Y-cable from two no-name cables, the colors of the wires may not match those shown. Use a multimeter to make sure the connections are correct.
 
-See video howtos:
+See video how-tos:
 * [Making USB Y-splitter cable](https://www.youtube.com/watch?v=uLuBuQUF61o).
 * [Soldering ATX controller](https://www.youtube.com/watch?v=hKnKOuH_f8M).
-
-Also check out this small [PCB for ATX](https://easyeda.com/mark.gilbert/zerow-kvm-v1) (if you know how to make PCBs).
 
 </details>
 
@@ -265,8 +265,8 @@ Happy using of Pi-KVM :)
 -----
 
 # Limitations
-* In very rare cases, some motherboards contain a buggy BIOS that does not understand the keyboard of the **v2** platform (bellow). The reason for this is that the BIOS doesn't fully implement the USB HID stack for composite devices correctly. Meanwhile, Mass Storage Drive can be detected. For this case, we suggest using the Arduino HID from the **v0** platform with **v2**. Thus the Pi-KVM will be connected by two USB cables to the motherboard: one of them will be responsible for the keyboard and mouse, the other for everything else. See [here](pages/arduino_hid.md).
-* A similar problem can be observed on devices with UEFI: the keyboard works fine, but the mouse does not work. This problem is much less significant, since all UEFI can be configured using the keyboard and hotkeys, without the mouse. If you want to get a mouse, the solution can be the same: using an Arduino HID, as in the advice above.
+* In very rare cases, some motherboards contain a buggy BIOS that does not understand the keyboard of the **v2** platform (below). The reason for this is that the BIOS doesn't fully implement the USB HID stack for composite devices correctly. Meanwhile, Mass Storage Drive can be detected. For this case, we suggest using the Arduino HID from the **v0** platform with **v2**. Thus the Pi-KVM will be connected by two USB cables to the motherboard: one of them will be responsible for the keyboard and mouse, the other for everything else. See [here](pages/arduino_hid.md).
+* A similar problem can be observed on devices with UEFI: the keyboard works fine, but the mouse does not work. This situation occurs when UEFI does not support absolute mouse mode, which prefers to use Pi-KVM. To solve this problem, [you can enable relative mouse mode](pages/mouse.md).
 
 Our future [v3 platform](#the-future-v3-platform-work-in-progress) will contain an optional HID module for such cases, so you won't have to build anything yourself.
 
@@ -303,7 +303,7 @@ Our future [v3 platform](#the-future-v3-platform-work-in-progress) will contain 
     ```
     then restart kvmd.
     
-* To use Wake-on-LAN with your server you must define some options such as the server's MAC address and (optionaly) IP address. Use `/etc/kvmd/override.yaml`. The format is:
+* To use Wake-on-LAN with your server you must define some options such as the server's MAC address and (optionally) IP address. Use `/etc/kvmd/override.yaml`. The format is:
     ```yaml
     kvmd:
         wol:
@@ -318,11 +318,17 @@ Our future [v3 platform](#the-future-v3-platform-work-in-progress) will contain 
             # port: 9  # By default
     ```
 
+* [Mouse modes (if the mouse doesn't work in UEFI)](pages/mouse.md).
+
+* [Multiport KVM over IP](pages/multiport.md).
+
 * [Using IPMI and Redfish](pages/ipmi.md).
   
 * [Using VNC](pages/vnc.md).
   
-* [Using Arduino HID (for USB or PS/2) with v2 platform](pages/arduino_hid.md).
+* [Using Arduino HID (for USB or PS/2) on v2 platform](pages/arduino_hid.md).
+
+* [Using Bluetooth HID](pages/bluetooth_hid.md).
 
 * [Wi-Fi configuration after install](pages/wifi_config.md).
 
@@ -351,7 +357,7 @@ For any help, you can contact our discord chat: https://discord.gg/bpmXfz5
 
 # FAQ
 **Q:** **Can I connect multiple servers to a single Pi-KVM?**  
-**A:** Yes, but it will require additional work to set up. Pi-KVM can be connected to a multi-port HDMI/USB switch and the switch's buttons can be connected via optocouplers to [the Pi's GPIO to switch channels](pages/gpio.md). If your KVM switches channels using keyboard shortcuts, there is a chance that it will not be able to work with OTG (v2 platform, see bellow), since it does not fully implement the USB stack. In this case, you will have to [use an Arduino board](pages/arduino_hid.md) to emulate the keyboard & mouse (Pi-KVM supports this configuration)
+**A:** Yes, but it will require additional work to set up. See [this page](pages/multiport.md).
 
 **Q:** **Can I use Pi-KVM with non-Raspberry Pi boards?**  
 **A:** Yes, but you will have to prepare the operating system yourself. As for the Pi-KVM software, you will need to replace some config files (such as UDEV rules). If you are a developer or an experienced system administrator, you will not have any problems with this. In addition, we are open to patches. If you need help with this, please contact us via Discord: https://discord.gg/bpmXfz5
@@ -367,32 +373,48 @@ If you wish to use Pi-KVM in production, we accept orders to modify it for your 
 
 # Special thanks
 These kind people donated money to the Pi-KVM project and supported work on it. We are very grateful for their help, and commemorating their names is the least we can do in return.
+* Accalia
+* Alberto Bassi
 * Aleksei Brusianskii
 * Alucard
+* Andrew Reusch
 * Andrzej V
+* Anix
 * Anton Kovalenko
 * Aron Perelman
 * Arthur Woimbée
+* Ashlesh Chaudhari
 * Augusto Becciu
 * baddog
 * Bao Tin Hoang
 * Ben Gordon
+* Ben Scott
+* Benjamin Melancon
+* Brainspore Networks
 * Branden Shaulis
+* Brian Vecchiarelli
 * Brian White
 * Bruno Gomes
 * Bryan Adams
 * Carl Mercier
+* Chris Burton
 * Christian Schlögl
+* Christoph Dette
 * Christof Maluck
 * Christoffer Lund
+* Corey Layton
 * Corey Lista
 * Clifford Coleman
 * Clinton Lee Taylor
+* Damon Meledones
+* Dan Brakeley
 * David Howell
 * Denis Andreev
 * Denis Yatsenko
+* dixon wong
 * Dmitry Shilov
 * Eric Phenix
+* ewook
 * Fergus McKay
 * Foamy
 * Fredrik Idréus
@@ -401,13 +423,18 @@ These kind people donated money to the Pi-KVM project and supported work on it. 
 * Guido Bernacchi
 * Heikki Tiittanen
 * HimKo
+* iks
 * Ivan Shapovalov
 * Jacob Morgan
+* James Cadd
+* James Cobb
+* Jamie Murphy
 * Jan Niehusmann
 * Jari Hiltunen
 * Jason Toland
 * Jeff Bowman
 * Jennifer Rowlett
+* Jerremy Holland
 * Joachim Bruening
 * John Kelley
 * John McGovern
@@ -415,39 +442,68 @@ These kind people donated money to the Pi-KVM project and supported work on it. 
 * Josh Ricker
 * Jordi Pakey-Rodriguez
 * Jozef Riha
+* Julian Forero
 * Justin Waters
 * Krzysztof Żelaśkiewicz
+* Lars
+* LeeNX
 * Lothar Schweikle-Droll
 * Lukas Söder
 * Malcolm Cameron
+* Marcos Wolf
 * Mark Gilbert
 * Mark Robinson
+* Markus Schicker
 * Markus Sobczack
+* Marten Hermans
 * Martin Gasser
+* Mateusz Grabowski
+* Matthew Cameron
 * Mauricio Allende
 * Mehmet Aydoğdu
 * Michael Kovacs
 * Michael Lynch
 * Morgan Helton
 * Nicholas Jeppson
+* Nick Leffler
+* Nick Roethemeier
 * Nils Orbat
 * Nithin Philips
 * Nod Swal
 * nybble
+* Oh Be
+* Philip Merricks
+* posicat
 * pozitron03
+* Quentin Peten
 * Ranc1d
+* Richard Bernarts
+* Richard Freemantle
 * Robin Gfatter
 * Samed Ozoglu
 * Scott
 * Scott Spicola
+* Seonwoo Lee
 * Sergey Lukjanov
+* Shichun Chen
+* Simplistic Realities
+* Stefan Bautz
 * Stefan Müller
 * Stefan Stemmer
 * Steve Ovens
 * Steven Richter
 * Tejun Heo
+* Thomas Søfteland
+* Timothee Besset
+* Tomas Kuchta
+* Tomáš hrubý
+* Tristan Schoening
 * Truman Kilen
+* Tyler
+* Udo Schroeter
 * Walter_Ego
+* William Stearns
 * YURI LEE
+* Yurii Ostapchuk
 * zgen
 * Zsombor Vari
